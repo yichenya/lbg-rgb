@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>计算 lab 值</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <style>
+        /* 添加一些基本的 CSS 样式 */
+        body {
+            font-family: Arial, sans-serif;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+
+        }
+
+        .container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .form-group input {
+            width: 300px;
+            height: 40px;
+            border-color: #409eff;
+            padding: 5px 15px;
+        }
+
+        .btn-submit {
+            margin-top: 30px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px 15px;
+            border: none;
+            cursor: pointer;
+            width: 300px;
+            height: 60px;
+        }
+
+        .sidebar {
+            position: absolute;
+            top: 10px;
+            right: 100px;
+            width: 265px; /* 设置框的宽度 */
+            height: 700px; /* 设置框的高度 */
+            background-color: #f2f2f2;
+
+
+        }
+
+        .sidebar1 {
+            position: absolute;
+            top: 325px;
+            right: 100px;
+            width: 265px; /* 设置框的宽度 */
+            height: 265px; /* 设置框的高度 */
+            {#background-color: #b92c28;#}
+
+
+        }
+
+        .sidebar2 {
+            position: absolute;
+            top: 120px;
+            left: 100px;
+            width: 266px; /* 设置框的宽度 */
+            height: 550px; /* 设置框的高度 */
+            background-color: #f2f2f2;
+            font-size: x-large;
+        }
+
+        .sidebar3 {
+            position: absolute;
+            top: 250px;
+            left: 110px;
+            width: 200px; /* 设置框的宽度 */
+            height: 200px; /* 设置框的高度 */
+
+
+        }
+
+        .sidebar4 {
+            position: absolute;
+            top: 450px;
+            left: 100px;
+            width: 266px; /* 设置框的宽度 */
+            height: 266px; /* 设置框的高度 */
+            background-color: #f2f2f2;
+            font-size: x-large;
+            color: #ec971f;
+        }
+
+        a {
+            text-decoration: none;
+        }
+        .color-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+    </style>
+</head>
+
+
+<body>
+
+
+<div class="sidebar">
+    <H2 style="text-align: center;font-size: 30px">Color Display</H2>
+<p>白板：</p>
+    <div style="position:absolute;top: 110px;right: 40px; width: 200px;height: 200px;
+            background-color:rgb( {{ rgb_color[0] }}, {{ rgb_color[1] }}, {{ rgb_color[2] }} )"></div>
+
+</div>
+
+
+<div class="sidebar1">
+<p>黑板：</p>
+   <div style="position:absolute;top: 50px;right: 40px; width: 200px;height: 200px;
+           background-color:rgb( {{ rgb_color2[0] }}, {{ rgb_color2[1] }}, {{ rgb_color2[2] }} )">
+    </div>
+
+</div>
+
+
+<div class="container">
+
+    <div class="sidebar2">
+        <h2 style="text-align: center">原色</h2>
+    </div>
+
+
+    <div class="sidebar3">
+        <div  style="width: 250px;height: 250px;left: 250px;border-radius: 50%;  background-color:rgb( {{ rgb_color0[0] }}, {{ rgb_color0[1] }}, {{ rgb_color0[2] }} )"></div>
+    </div>
+
+
+{#    <div class="sidebar4">#}
+{#      #}
+{#    </div>#}
+
+<div style="top: 30px;width: 100px;height: 50px;background-color: #FFFFFF">
+
+</div>
+    <h2 style="  text-align: center;font-size:50px; font-family: 方正舒体;">   </h2>
+    <form method="POST" action="/cacu">
+        <div class="form-group">
+            <label for="P1">原面料色差（ΔEfabric）:</label>
+            <input placeholder="请输入ΔEfabric " type="number" id="P1" name="P1" step="1" required>
+        </div>
+        <div class="form-group">
+            <label for="P2">设计值L*（ L*design）:</label>
+            <input placeholder="请输入 L*design" type="number" id="P2" name="P2" step="1" required>
+        </div>
+        <div class="form-group">
+            <label for="G">设计值a*（ a*design ）:</label>
+            <input placeholder="请输入a*design" type="number" id="G" name="G" step="1" required>
+        </div>
+        <div class="form-group">
+            <label for="S">设计值b*（b*design）:</label>
+            <input placeholder="请输入b*design" type="number" id="S" name="S" step="1" required>
+        </div>
+
+        <button type="submit" class="btn-submit" style="font-size: 30px">show color</button>
+    </form>
+{#  <p>{{ rgb_color0 }}</p>#}
+{#<p>R: {{ rgb_color0[0] }}, G: {{ rgb_color0[1] }}, B: {{ rgb_color0[2] }}</p>#}
+
+    {% if lab_values_calculated %}
+
+       <p>Lab1: ({{ '%.2f'|format(L1) }}, {{ '%.2f'|format(a1) }}, {{ '%.2f'|format(b1) }})</p>
+   {% endif %}
+
+
+   {% if lab_values_calculated %}
+        <p>Lab2: ({{ '%.2f'|format(L2) }}, {{'%.2f'|format(a2)}}, {{ '%.2f'|format(b2) }})</p>
+   {% endif %}
+
+</div>
+
+</body>
+
+</html>
